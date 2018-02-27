@@ -51,7 +51,12 @@ class Processor
             if (!is_array($existingValues)) {
                 throw new \InvalidArgumentException(sprintf('The existing "%s" file does not contain an array', $realFile));
             }
-            $actualValues = array_merge($actualValues, $existingValues);
+            if($parameterKey == 'laravel'){
+                $actualValues = array_merge($actualValues, ['laravel' => $existingValues]);
+            }else{
+                $actualValues = array_merge($actualValues, $existingValues);
+            }
+
         }
 
         $actualValues[$parameterKey] = $this->processParams($config, $expectedParams, (array) $actualValues[$parameterKey]);
@@ -60,7 +65,12 @@ class Processor
             mkdir($dir, 0755, true);
         }
 
-        file_put_contents($realFile, "# This file is auto-generated during the composer install\n" . Yaml::dump($actualValues, 99));
+        if($parameterKey == 'laravel'){
+            file_put_contents($realFile, "# This file is auto-generated during the composer install\n" . Yaml::dump($actualValues['laravel'], 99));
+        }else{
+            file_put_contents($realFile, "# This file is auto-generated during the composer install\n" . Yaml::dump($actualValues, 99));
+        }
+
     }
 
     private function processConfig(array $config)
