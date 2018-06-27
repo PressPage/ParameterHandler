@@ -16,7 +16,6 @@
     },
     "require-dev": {
         "composer/composer": "1.0.*@dev",
-        "phpspec/prophecy-phpunit": "~1.0",
         "symfony/filesystem": "~2.2"
     },
     "autoload": {
